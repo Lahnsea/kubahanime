@@ -108,14 +108,13 @@ export function usePopularAnime(initialLimit = 24, staggerMs = 0) {
 }
 
 // ─── useSearchAnime ─────────────────────────────────────────────────────────────
-export function useSearchAnime() {
-  const [query, setQuery] = useState('');
+export function useSearchAnime(query) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!query.trim()) {
+    if (!query || !query.trim()) {
       setData([]);
       setLoading(false);
       return;
@@ -141,7 +140,7 @@ export function useSearchAnime() {
     return () => { cancelled = true; clearTimeout(timer); };
   }, [query]);
 
-  return { query, setQuery, data, loading, error };
+  return { data, loading, error };
 }
 
 // ─── useAnimeDetail ─────────────────────────────────────────────────────────────

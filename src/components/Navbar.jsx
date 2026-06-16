@@ -232,7 +232,7 @@ function NavSearchBar({ onClose }) {
   const navigate = useNavigate();
   const inputRef = useRef(null);
 
-  const { results, loading } = useSearchAnime(query, 0, 6);
+  const { data: results = [], loading } = useSearchAnime(query);
 
   useEffect(() => { inputRef.current?.focus(); }, []);
 
@@ -295,7 +295,8 @@ function NavSearchBar({ onClose }) {
           border: '1px solid var(--border-card)',
           borderRadius: 'var(--radius-xl)',
           boxShadow: '0 20px 60px rgba(0,0,0,0.7)',
-          overflow: 'hidden',
+          overflowY: 'auto',
+          maxHeight: '350px',
           animation: 'fadeIn 0.15s ease',
           zIndex: 300,
         }}>

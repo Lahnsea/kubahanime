@@ -497,6 +497,14 @@ button {
   }
   .detail-header-info .stats-row,
   .detail-header-info .actions-row { justify-content: center !important; }
+  .hero-carousel-dots {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 20px !important;
+  }
+  .hero-carousel-arrow {
+    display: none !important;
+  }
 }
 
 @media (max-width: 640px) {

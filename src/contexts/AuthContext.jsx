@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   updateProfile,
+  updatePassword,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db, googleProvider, isFirebaseMocked } from '../firebase';
@@ -171,6 +172,67 @@ export function AuthProvider({ children }) {
     setUser(null);
   }
 
+  // ── Update Profile ──────────────────────────────────────────────────────────
+  async function updateProfileInfo(displayName, photoURL) {
+    setError(null);
+    if (isFirebaseMocked) {
+      const loggedUser = JSON.parse(localStorage.getItem('mock_current_user') || '{}');
+      loggedUser.displayName = displayName;
+      loggedUser.photoURL = photoURL;
+      localStorage.setItem('mock_current_user', JSON.stringify(loggedUser));
+
+      // Update mock database as well
+      const users = JSON.parse(localStorage.getItem('mock_users') || '[]');
+      const updatedUsers = users.map(u => u.uid === loggedUser.uid ? { ...u, displayName, photoURL } : u);
+      localStorage.setItem('mock_users', JSON.stringify(updatedUsers));
+
+      setUser(loggedUser);
+      return { success: true };
+    }
+
+    try {
+      if (!auth.currentUser) throw new Error('User not logged in');
+      await updateProfile(auth.currentUser, { displayName, photoURL });
+      
+      // Update Firestore profile doc as well
+      const userRef = doc(db, 'users', auth.currentUser.uid, 'profile', 'info');
+      await setDoc(userRef, {
+        displayName,
+        photoURL,
+      }, { merge: true }).catch(() => {});
+
+      // Force refresh user state in React
+      setUser({ ...auth.currentUser });
+      return { success: true };
+    } catch (err) {
+      const msg = err.message || 'Gagal memperbarui profil.';
+      setError(msg);
+      return { success: false, error: msg };
+    }
+  }
+
+  // ── Update Password ─────────────────────────────────────────────────────────
+  async function changeUserPassword(newPassword) {
+    setError(null);
+    if (isFirebaseMocked) {
+      const loggedUser = JSON.parse(localStorage.getItem('mock_current_user') || '{}');
+      const users = JSON.parse(localStorage.getItem('mock_users') || '[]');
+      const updatedUsers = users.map(u => u.uid === loggedUser.uid ? { ...u, password: newPassword } : u);
+      localStorage.setItem('mock_users', JSON.stringify(updatedUsers));
+      return { success: true };
+    }
+
+    try {
+      if (!auth.currentUser) throw new Error('User not logged in');
+      await updatePassword(auth.currentUser, newPassword);
+      return { success: true };
+    } catch (err) {
+      const msg = getFriendlyError(err.code) || err.message || 'Gagal mengganti password.';
+      setError(msg);
+      return { success: false, error: msg };
+    }
+  }
+
   function clearError() { setError(null); }
 
   const value = {
@@ -182,6 +244,8 @@ export function AuthProvider({ children }) {
     loginWithEmail,
     registerWithEmail,
     logout,
+    updateProfileInfo,
+    changeUserPassword,
     isLoggedIn: !!user,
   };
 

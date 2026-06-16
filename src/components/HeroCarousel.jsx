@@ -198,7 +198,7 @@ export default function HeroCarousel({ animes = [] }) {
       </div>
 
       {/* Progress dots */}
-      <div style={{
+      <div className="hero-carousel-dots" style={{
         position: 'absolute', bottom: '32px', left: '80px',
         display: 'flex', gap: '8px', zIndex: 20,
       }}>
@@ -226,6 +226,7 @@ export default function HeroCarousel({ animes = [] }) {
         <button
           key={i}
           onClick={btn.onClick}
+          className="hero-carousel-arrow"
           style={{
             position: 'absolute', top: '50%', transform: 'translateY(-50%)',
             ...btn.side, zIndex: 20,

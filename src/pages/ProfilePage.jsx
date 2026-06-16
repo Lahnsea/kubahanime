@@ -148,11 +148,281 @@ const BANNER_GRADIENTS = [
   'linear-gradient(135deg, #8b5cf6 0%, #5b21b6 40%, #0d0a1a 100%)',
 ];
 
+/* ── Edit Profile Modal ──────────────────────────────────────────── */
+function EditProfileModal({ user, updateProfileInfo, changeUserPassword, onClose }) {
+  const [displayName, setDisplayName] = useState(user.displayName || '');
+  const [photoURL, setPhotoURL] = useState(user.photoURL || '');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({ type: '', message: '' });
+  const [previewURL, setPreviewURL] = useState(user.photoURL || '');
+
+  // Close on Escape
+  const handleKeyDown = (e) => { if (e.key === 'Escape') onClose(); };
+
+  const avatarPresets = [
+    { name: 'Default', url: `https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(user.email || 'user')}` },
+    { name: 'Bottts', url: 'https://api.dicebear.com/7.x/bottts/svg?seed=Neon' },
+    { name: 'Lorelei', url: 'https://api.dicebear.com/7.x/lorelei/svg?seed=Anime' },
+    { name: 'Avataaars', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hero' },
+    { name: 'Pixel', url: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=cyber' },
+    { name: 'Identicon', url: 'https://api.dicebear.com/7.x/identicon/svg?seed=retro' },
+  ];
+
+  // Handle file pick → convert to base64
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setStatus({ type: 'error', message: 'File harus berupa gambar (JPG, PNG, GIF, dll).' });
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setStatus({ type: 'error', message: 'Ukuran file maksimal 2MB.' });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const base64 = ev.target.result;
+      setPhotoURL(base64);
+      setPreviewURL(base64);
+      setStatus({ type: '', message: '' });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAvatarPreset = (url) => {
+    setPhotoURL(url);
+    setPreviewURL(url);
+  };
+
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setStatus({ type: '', message: '' });
+    try {
+      if (displayName !== user.displayName || photoURL !== user.photoURL) {
+        const res = await updateProfileInfo(displayName, photoURL);
+        if (!res.success) throw new Error(res.error);
+      }
+      if (newPassword) {
+        if (newPassword !== confirmPassword) throw new Error('Konfirmasi password tidak cocok.');
+        if (newPassword.length < 6) throw new Error('Password baru minimal 6 karakter.');
+        const resPass = await changeUserPassword(newPassword);
+        if (!resPass.success) throw new Error(resPass.error);
+        setNewPassword('');
+        setConfirmPassword('');
+      }
+      setStatus({ type: 'success', message: 'Profil berhasil diperbarui! ✨' });
+      setTimeout(() => onClose(), 1400);
+    } catch (err) {
+      setStatus({ type: 'error', message: err.message || 'Terjadi kesalahan.' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const inputStyle = {
+    width: '100%', padding: '10px 13px', borderRadius: 'var(--radius-sm)',
+    background: 'var(--bg-card)', border: '1px solid var(--border-card)',
+    color: 'var(--text-primary)', fontFamily: 'Outfit', fontSize: '0.88rem',
+    outline: 'none', transition: 'var(--transition)',
+  };
+  const labelStyle = {
+    display: 'block', fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)',
+    textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px',
+  };
+
+  return (
+    <div
+      onKeyDown={handleKeyDown}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 500,
+        background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(6px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '16px',
+        animation: 'fadeIn 0.2s ease',
+      }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div style={{
+        width: '100%', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto',
+        background: 'rgba(18,18,22,0.98)', backdropFilter: 'blur(24px)',
+        border: '1px solid var(--border-card)',
+        borderRadius: 'var(--radius-2xl)',
+        boxShadow: '0 32px 80px rgba(0,0,0,0.8)',
+        animation: 'scaleIn 0.2s ease',
+      }}>
+        {/* Modal header */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '20px 24px', borderBottom: '1px solid var(--border-subtle)',
+        }}>
+          <h2 style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.1rem' }}>
+            ⚙️ Edit Profil
+          </h2>
+          <button onClick={onClose} style={{
+            width: 32, height: 32, borderRadius: '8px',
+            background: 'var(--bg-elevated)', border: '1px solid var(--border-card)',
+            color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1rem',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>✕</button>
+        </div>
+
+        {/* Modal body */}
+        <div style={{ padding: '24px' }}>
+          {/* Status banner */}
+          {status.message && (
+            <div style={{
+              padding: '10px 14px', borderRadius: '8px', marginBottom: '18px',
+              fontSize: '0.83rem', fontFamily: 'Outfit', fontWeight: 600,
+              background: status.type === 'success' ? 'rgba(45,206,137,0.12)' : 'rgba(239,68,68,0.12)',
+              color: status.type === 'success' ? '#2dce89' : '#f87171',
+              border: `1px solid ${status.type === 'success' ? 'rgba(45,206,137,0.2)' : 'rgba(239,68,68,0.2)'}`,
+            }}>
+              {status.message}
+            </div>
+          )}
+
+          <form onSubmit={handleUpdateProfile} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+
+            {/* Avatar preview + upload */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
+              {/* Live preview */}
+              <div style={{
+                width: 72, height: 72, borderRadius: '50%', overflow: 'hidden', flexShrink: 0,
+                border: '3px solid var(--accent-primary)',
+                boxShadow: '0 0 16px rgba(244,117,33,0.35)',
+                background: 'var(--bg-elevated)',
+              }}>
+                {previewURL ? (
+                  <img src={previewURL} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <div style={{
+                    width: '100%', height: '100%', background: 'var(--accent-primary)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontFamily: 'Outfit', fontWeight: 900, fontSize: '1.5rem', color: 'white',
+                  }}>
+                    {(user.displayName?.[0] || user.email?.[0] || 'U').toUpperCase()}
+                  </div>
+                )}
+              </div>
+
+              {/* Upload button */}
+              <div style={{ flex: 1 }}>
+                <label style={{
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  padding: '9px 14px', borderRadius: 'var(--radius-md)',
+                  background: 'rgba(244,117,33,0.08)', border: '1px solid rgba(244,117,33,0.25)',
+                  color: 'var(--accent-primary)', fontSize: '0.82rem', fontFamily: 'Outfit', fontWeight: 700,
+                  cursor: 'pointer', transition: 'var(--transition)', width: 'fit-content',
+                }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(244,117,33,0.16)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(244,117,33,0.08)'}
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                  Upload Foto
+                  <input
+                    type="file" accept="image/*" onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                  />
+                </label>
+                <p style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '5px' }}>
+                  JPG, PNG, GIF — maks. 2MB
+                </p>
+              </div>
+            </div>
+
+            {/* Avatar presets */}
+            <div>
+              <div style={labelStyle}>Atau Pilih Avatar Preset</div>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {avatarPresets.map((av) => {
+                  const isSelected = photoURL === av.url;
+                  return (
+                    <button
+                      type="button" key={av.name} onClick={() => handleAvatarPreset(av.url)}
+                      title={av.name}
+                      style={{
+                        width: 42, height: 42, borderRadius: '50%', overflow: 'hidden',
+                        border: `2px solid ${isSelected ? 'var(--accent-primary)' : 'rgba(255,255,255,0.08)'}`,
+                        boxShadow: isSelected ? '0 0 10px var(--accent-glow)' : 'none',
+                        padding: 0, cursor: 'pointer', transition: 'var(--transition)',
+                        background: 'var(--bg-card)',
+                      }}
+                    >
+                      <img src={av.url} alt={av.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Display Name */}
+            <div>
+              <label style={labelStyle}>Nama Tampilan</label>
+              <input
+                type="text" value={displayName} onChange={e => setDisplayName(e.target.value)}
+                placeholder="Masukkan nama..." required style={inputStyle}
+                onFocus={e => e.currentTarget.style.borderColor = 'var(--border-accent)'}
+                onBlur={e => e.currentTarget.style.borderColor = 'var(--border-card)'}
+              />
+            </div>
+
+            <hr style={{ border: 'none', borderBottom: '1px solid var(--border-subtle)' }} />
+
+            <div>
+              <div style={{ fontFamily: 'Outfit', fontWeight: 700, fontSize: '0.85rem', marginBottom: '4px' }}>Ganti Password</div>
+              <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '12px' }}>Kosongkan jika tidak ingin mengganti.</p>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div>
+                  <label style={labelStyle}>Password Baru</label>
+                  <input
+                    type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)}
+                    placeholder="Min. 6 karakter" style={inputStyle}
+                    onFocus={e => e.currentTarget.style.borderColor = 'var(--border-accent)'}
+                    onBlur={e => e.currentTarget.style.borderColor = 'var(--border-card)'}
+                  />
+                </div>
+                <div>
+                  <label style={labelStyle}>Konfirmasi</label>
+                  <input
+                    type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}
+                    placeholder="Ulangi" style={inputStyle}
+                    onFocus={e => e.currentTarget.style.borderColor = 'var(--border-accent)'}
+                    onBlur={e => e.currentTarget.style.borderColor = 'var(--border-card)'}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="submit" disabled={loading} className="btn-primary"
+              style={{ justifyContent: 'center', padding: '12px' }}
+            >
+              {loading ? (
+                <div style={{ width: 18, height: 18, border: '2px solid white', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.6s linear infinite' }} />
+              ) : '💾 Simpan Perubahan'}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ProfilePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get('tab') || 'favorites';
-  const { user, isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn, logout, updateProfileInfo, changeUserPassword } = useAuth();
   const [authOpen, setAuthOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
   const { getFavorites, removeFavorite }     = useFavorites();
   const { getWatchlist, removeFromWatchlist } = useWatchlist();
@@ -302,16 +572,34 @@ export default function ProfilePage() {
               <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>{user.email}</p>
             </div>
 
-            {/* Logout */}
-            <button onClick={logout} style={{
-              padding: '8px 18px', borderRadius: 'var(--radius-md)',
-              background: 'rgba(239,68,68,0.09)', border: '1px solid rgba(239,68,68,0.2)',
-              color: '#f87171', fontSize: '0.82rem', fontFamily: 'Outfit', fontWeight: 600,
-              cursor: 'pointer', transition: 'var(--transition)',
-            }}
-              onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.18)'}
-              onMouseLeave={e => e.currentTarget.style.background = 'rgba(239,68,68,0.09)'}
-            >🚪 Keluar</button>
+            {/* Action buttons: Edit Profil + Logout */}
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <button onClick={() => setEditOpen(true)} style={{
+                padding: '8px 18px', borderRadius: 'var(--radius-md)',
+                background: 'rgba(244,117,33,0.1)', border: '1px solid rgba(244,117,33,0.25)',
+                color: 'var(--accent-primary)', fontSize: '0.82rem', fontFamily: 'Outfit', fontWeight: 600,
+                cursor: 'pointer', transition: 'var(--transition)',
+                display: 'flex', alignItems: 'center', gap: '6px',
+              }}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(244,117,33,0.18)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'rgba(244,117,33,0.1)'}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+                Edit Profil
+              </button>
+              <button onClick={logout} style={{
+                padding: '8px 18px', borderRadius: 'var(--radius-md)',
+                background: 'rgba(239,68,68,0.09)', border: '1px solid rgba(239,68,68,0.2)',
+                color: '#f87171', fontSize: '0.82rem', fontFamily: 'Outfit', fontWeight: 600,
+                cursor: 'pointer', transition: 'var(--transition)',
+              }}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.18)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'rgba(239,68,68,0.09)'}
+              >🚪 Keluar</button>
+            </div>
           </div>
         </div>
 
@@ -400,6 +688,17 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
+
+      {/* Edit Profile Modal */}
+      {editOpen && (
+        <EditProfileModal
+          user={user}
+          updateProfileInfo={updateProfileInfo}
+          changeUserPassword={changeUserPassword}
+          onClose={() => setEditOpen(false)}
+        />
+      )}
     </div>
   );
 }
+
