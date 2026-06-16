@@ -1,16 +1,140 @@
-# React + Vite
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=250&color=0:8B5CF6,100:EC4899&text=KubahAnime&fontColor=ffffff&fontSize=60&animation=fadeIn" />
+</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<div align="center">
 
-Currently, two official plugins are available:
+# 🌙 KubahAnime
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Modern anime streaming platform built with React.
 
-## React Compiler
+[Live Demo](https://your-domain.com) • [Report Bug](../../issues) • [Request Feature](../../issues)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+</div>
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ About
+
+KubahAnime is a modern anime streaming web application focused on speed, clean UI, and smooth viewing experience.
+
+Built for anime fans who just want to watch their favorite shows without fighting a user interface designed by a sleep-deprived raccoon.
+
+---
+
+## 🚀 Features
+
+- 🎬 Anime Streaming
+- 🔍 Advanced Search
+- ❤️ Favorites & Watchlist
+- 👤 User Authentication
+- 📱 Responsive Design
+- 🌙 Dark Mode
+- ⚡ Fast Loading
+- 🔄 Real-time Data from API
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+
+- React
+- Vite
+- React Router
+- Axios
+
+### Styling
+
+- Tailwind CSS
+- Framer Motion
+
+### Backend & Services
+
+- Firebase Authentication
+- Anime API
+
+### Deployment
+
+- Vercel / Netlify
+
+---
+
+## 📸 Preview
+
+![Homepage](./screenshots/home.png)
+
+---
+
+## 📂 Project Structure
+
+```bash
+src/
+├── components/
+├── pages/
+├── hooks/
+├── services/
+├── utils/
+├── assets/
+└── App.jsx
+```
+
+---
+
+## ⚙️ Installation
+
+Clone repository
+
+```bash
+git clone https://github.com/Lahnsea/kubahanime.git
+```
+
+Move into project
+
+```bash
+cd kubahanime
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Run development server
+
+```bash
+npm run dev
+```
+
+---
+
+## 🎯 Roadmap
+
+- [x] Anime Search
+- [x] Authentication
+- [x] Responsive UI
+- [ ] Watch History
+- [ ] Episode Comments
+- [ ] Recommendation System
+- [ ] PWA Support
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome.
+
+---
+
+## 📜 License
+
+This project is available under the MIT License.
+
+---
+
+<div align="center">
+
+Made with ☕ and questionable sleep schedules.
+
+</div>
