@@ -4,8 +4,6 @@
 
 <div align="center">
 
-# 🌙 KubahAnime
-
 Modern anime streaming platform built with React.
 
 [Live Demo](https://your-domain.com) • [Report Bug](../../issues) • [Request Feature](../../issues)

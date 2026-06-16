@@ -136,7 +136,7 @@ export default function WatchPage() {
           </div>
 
           {/* Two-Column Layout */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '24px', alignItems: 'flex-start' }}>
+          <div className="watch-two-columns" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '24px', alignItems: 'flex-start' }}>
 
             {/* Main Column: Player & Info */}
             <div>
@@ -176,10 +176,10 @@ export default function WatchPage() {
                   <button
                     disabled={!hasPrev}
                     onClick={() => changeEpisode(epNumInt - 1)}
-                    className="btn-secondary"
+                    className="btn-secondary watch-nav-btn"
                     style={{ opacity: hasPrev ? 1 : 0.5, cursor: hasPrev ? 'pointer' : 'not-allowed', padding: '8px 16px', fontSize: '0.8rem' }}
                   >
-                    ◀ Episode Sebelumnya
+                    <span>◀</span> <span className="btn-text">Sebelumnya</span>
                   </button>
                   <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontFamily: 'Outfit, sans-serif', fontWeight: 700 }}>
                     Ep {episodeNum} / {totalEpisodes || '?'}
@@ -187,17 +187,17 @@ export default function WatchPage() {
                   <button
                     disabled={!hasNext}
                     onClick={() => changeEpisode(epNumInt + 1)}
-                    className="btn-primary"
+                    className="btn-primary watch-nav-btn"
                     style={{ opacity: hasNext ? 1 : 0.5, cursor: hasNext ? 'pointer' : 'not-allowed', padding: '8px 16px', fontSize: '0.8rem' }}
                   >
-                    Episode Berikutnya ▶
+                    <span className="btn-text">Berikutnya</span> <span>▶</span>
                   </button>
                 </div>
               </div>
             </div>
 
             {/* Right Column */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '340px', flexShrink: 0 }}>
+            <div className="watch-sidebar" style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '340px', flexShrink: 0 }}>
               {/* Episode Sidebar */}
               <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-card)', borderRadius: 'var(--radius-xl)', padding: '20px', maxHeight: 'calc(100vh - var(--navbar-height) - 180px)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                 <h3 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: '1rem', marginBottom: '14px', paddingBottom: '10px', borderBottom: '1px solid var(--border-subtle)' }}>

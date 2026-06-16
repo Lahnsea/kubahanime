@@ -221,7 +221,7 @@ export default function HomePage() {
 
 
         {/* ===== Two Column Layout ===== */}
-        <div style={{
+        <div className="home-two-columns" style={{
           display: 'grid',
           gridTemplateColumns: '1fr 380px',
           gap: '40px',

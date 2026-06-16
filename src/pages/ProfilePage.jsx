@@ -14,7 +14,7 @@ function AnimeListItem({ item, onRemove, removeLabel = 'Hapus' }) {
   }
 
   return (
-    <div style={{
+    <div className="profile-list-item" style={{
       display: 'flex', alignItems: 'center', gap: '14px',
       padding: '12px 16px',
       borderRadius: 'var(--radius-md)',
@@ -54,7 +54,7 @@ function AnimeListItem({ item, onRemove, removeLabel = 'Hapus' }) {
           )}
         </div>
       </div>
-      <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+      <div className="profile-list-item-actions" style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
         {item.lastEpisodeNum && (
           <Link
             to={`/watch/${item.id}/episode/${item.lastEpisodeNum}`}
@@ -181,7 +181,7 @@ export default function ProfilePage() {
     <div style={{ paddingTop: 'var(--navbar-height)' }}>
       <div className="container" style={{ paddingTop: '40px', paddingBottom: '64px' }}>
         {/* Profile Header */}
-        <div style={{
+        <div className="profile-header-card" style={{
           display: 'flex', alignItems: 'center', gap: '20px',
           padding: '24px',
           borderRadius: 'var(--radius-xl)',
@@ -229,7 +229,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: '6px', marginBottom: '20px' }}>
+        <div className="profile-tabs" style={{ display: 'flex', gap: '6px', marginBottom: '20px' }}>
           {TABS.map(tab => (
             <button
               key={tab.key}

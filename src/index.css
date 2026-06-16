@@ -258,8 +258,188 @@ button {
   padding: 0 24px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .container {
     padding: 0 16px;
   }
+
+  /* Navbar */
+  .nav-links {
+    display: none !important;
+  }
+  .mobile-menu-toggle {
+    display: flex !important;
+  }
+  .nav-search-btn {
+    min-width: unset !important;
+    padding: 8px !important;
+    border-radius: 50% !important;
+    aspect-ratio: 1/1;
+  }
+  .nav-search-text,
+  .nav-search-shortcut {
+    display: none !important;
+  }
+
+  /* Hero Carousel */
+  .hero-carousel {
+    height: 480px !important;
+  }
+  .hero-carousel-content {
+    padding: 0 32px !important;
+    gap: 24px !important;
+  }
+  .hero-carousel-cover {
+    display: none !important;
+  }
+
+  /* Home Columns */
+  .home-two-columns {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+}
+
+@media (max-width: 960px) {
+  /* Detail Page Layouts */
+  .detail-two-columns {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .detail-sidebar {
+    width: 100% !important;
+  }
+
+  /* Watch Page Layouts */
+  .watch-two-columns {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  .watch-sidebar {
+    width: 100% !important;
+  }
+  /* Set max-height for mobile drawer layout so it doesn't take too much vertical height */
+  .watch-sidebar > div:first-child {
+    max-height: 380px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hero Carousel */
+  .hero-carousel {
+    height: 400px !important;
+  }
+  .hero-carousel-content {
+    padding: 0 20px !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .hero-carousel-text {
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .hero-carousel-text p {
+    text-align: center !important;
+  }
+  .hero-carousel-text .badge-container,
+  .hero-carousel-text .cta-container {
+    justify-content: center !important;
+  }
+
+  /* Detail Page Header */
+  .detail-header-flex {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 20px !important;
+  }
+  .detail-header-info {
+    padding-top: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .detail-header-info .stats-row,
+  .detail-header-info .actions-row {
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Server Toggle Button Morph */
+  .nav-server-toggle-text,
+  .nav-server-toggle-icon {
+    display: none !important;
+  }
+  .nav-server-toggle {
+    padding: 8px !important;
+    border-radius: 50% !important;
+    aspect-ratio: 1/1;
+  }
+
+  /* Profile page card styling */
+  .profile-header-card {
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 20px !important;
+    gap: 16px !important;
+  }
+  .profile-header-card button {
+    width: 100% !important;
+  }
+
+  /* Profile lists & tabs */
+  .profile-tabs {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  .profile-tabs button {
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
+  }
+  .profile-tabs button:last-child {
+    margin-left: unset !important;
+    width: 100% !important;
+    flex: none !important;
+  }
+
+  .profile-list-item {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    padding: 16px !important;
+  }
+  .profile-list-item-actions {
+    justify-content: flex-end !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Search Form */
+  .search-form {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  /* Watch Page nav compact button */
+  .watch-nav-btn {
+    padding: 8px 12px !important;
+  }
+  .watch-nav-btn .btn-text {
+    display: none !important;
+  }
+}
+
+/* Animations for Mobile Drawer */
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.mobile-drawer {
+  animation: slideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }

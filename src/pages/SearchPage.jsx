@@ -92,7 +92,7 @@ export default function SearchPage() {
           </h1>
 
           {/* Search Bar */}
-          <form onSubmit={handleSearch} style={{ display: 'flex', gap: '12px', maxWidth: '600px' }}>
+          <form onSubmit={handleSearch} className="search-form" style={{ display: 'flex', gap: '12px', maxWidth: '600px' }}>
             <input
               type="text"
               value={inputValue}

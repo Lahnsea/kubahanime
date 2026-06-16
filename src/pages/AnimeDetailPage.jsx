@@ -192,7 +192,7 @@ export default function AnimeDetailPage() {
 
         <div className="container" style={{ position: 'relative', marginTop: -200, paddingBottom: '64px' }}>
           {/* Main Info Card */}
-          <div style={{
+          <div className="detail-header-flex" style={{
             display: 'flex',
             gap: '32px',
             marginBottom: '40px',
@@ -215,7 +215,7 @@ export default function AnimeDetailPage() {
             </div>
 
             {/* Title / Description */}
-            <div style={{ flex: 1, minWidth: '280px', paddingTop: '80px' }}>
+            <div className="detail-header-info" style={{ flex: 1, minWidth: '280px', paddingTop: '80px' }}>
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px' }}>
                 <Link to="/" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
                 <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>›</span>
@@ -242,7 +242,7 @@ export default function AnimeDetailPage() {
               )}
 
               {/* Stats row */}
-              <div style={{ display: 'flex', gap: '20px', marginBottom: '20px', flexWrap: 'wrap' }}>
+              <div className="stats-row" style={{ display: 'flex', gap: '20px', marginBottom: '20px', flexWrap: 'wrap' }}>
                 {rating && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24">
@@ -265,7 +265,7 @@ export default function AnimeDetailPage() {
               </div>
 
               {/* Action Buttons */}
-              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px' }}>
+              <div className="actions-row" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px' }}>
                 {totalEpisodes > 0 && (
                   <Link
                     to={`/watch/${id}/episode/1`}
@@ -303,7 +303,7 @@ export default function AnimeDetailPage() {
           </div>
 
           {/* Details Sidebar / Synopsis Grid */}
-          <div style={{
+          <div className="detail-two-columns" style={{
             display: 'grid',
             gridTemplateColumns: '1fr 320px',
             gap: '40px',
@@ -408,7 +408,7 @@ export default function AnimeDetailPage() {
             </div>
 
             {/* Right Column */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '320px', flexShrink: 0 }}>
+            <div className="detail-sidebar" style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '320px', flexShrink: 0 }}>
               {/* Info details */}
               <div style={{
                 background: 'var(--bg-surface)',

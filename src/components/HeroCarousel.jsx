@@ -53,7 +53,7 @@ export default function HeroCarousel({ animes = [] }) {
   const animeId = anime.mal_id.toString();
 
   return (
-    <div style={{
+    <div className="hero-carousel" style={{
       position: 'relative',
       width: '100%',
       height: '540px',
@@ -89,7 +89,7 @@ export default function HeroCarousel({ animes = [] }) {
       }} />
 
       {/* Content */}
-      <div style={{
+      <div className="hero-carousel-content" style={{
         position: 'relative',
         zIndex: 10,
         height: '100%',
@@ -101,13 +101,13 @@ export default function HeroCarousel({ animes = [] }) {
         gap: '48px',
       }}>
         {/* Text Content */}
-        <div style={{
+        <div className="hero-carousel-text" style={{
           flex: 1,
           maxWidth: '500px',
           animation: animating ? 'none' : 'slide-in 0.6s ease both',
         }}>
           {/* Tags */}
-          <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
+          <div className="badge-container" style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
             <span className="badge badge-ongoing" style={{ textTransform: 'capitalize' }}>{status}</span>
             {genres.map(g => (
               <span
@@ -178,7 +178,7 @@ export default function HeroCarousel({ animes = [] }) {
           </p>
 
           {/* CTA Buttons */}
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div className="cta-container" style={{ display: 'flex', gap: '12px' }}>
             <Link to={`/anime/${animeId}`} className="btn-primary">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
@@ -192,7 +192,7 @@ export default function HeroCarousel({ animes = [] }) {
         </div>
 
         {/* Cover Image */}
-        <div style={{
+        <div className="hero-carousel-cover" style={{
           flexShrink: 0,
           width: '200px',
           animation: animating ? 'none' : 'fadeIn 0.6s ease both',

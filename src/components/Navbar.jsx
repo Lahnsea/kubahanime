@@ -109,6 +109,7 @@ function ServerToggle() {
   return (
     <button
       onClick={toggleLang}
+      className="nav-server-toggle"
       title={isID ? 'Ganti ke Server Dubbed' : 'Ganti ke Server Subtitled'}
       style={{
         display: 'flex', alignItems: 'center', gap: '6px',
@@ -130,8 +131,8 @@ function ServerToggle() {
       }}
     >
       <span style={{ fontSize: '1rem' }}>{isID ? '📝' : '🗣️'}</span>
-      {isID ? 'Subbed' : 'Dubbed'}
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ opacity: 0.7 }}>
+      <span className="nav-server-toggle-text">{isID ? 'Subbed' : 'Dubbed'}</span>
+      <svg className="nav-server-toggle-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ opacity: 0.7 }}>
         <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
       </svg>
     </button>
@@ -276,6 +277,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const searchRef = useRef(null);
   const navigate = useNavigate();
   const { user, isLoggedIn } = useAuth();
@@ -337,7 +339,7 @@ export default function Navbar() {
         </Link>
 
         {/* Nav Links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2px', marginLeft: '16px' }}>
+        <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '2px', marginLeft: '16px' }}>
           {[
             { label: 'Beranda', path: '/' },
             { label: 'Populer', path: '/popular' },
@@ -363,6 +365,7 @@ export default function Navbar() {
         {/* Search */}
         <button
           onClick={() => setSearchOpen(true)}
+          className="nav-search-btn"
           style={{
             display: 'flex', alignItems: 'center', gap: '8px',
             padding: '7px 14px',
@@ -379,8 +382,8 @@ export default function Navbar() {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
             <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
           </svg>
-          Cari anime...
-          <span style={{ marginLeft: 'auto', fontSize: '0.68rem', opacity: 0.45 }}>Ctrl+K</span>
+          <span className="nav-search-text">Cari anime...</span>
+          <span className="nav-search-shortcut" style={{ marginLeft: 'auto', fontSize: '0.68rem', opacity: 0.45 }}>Ctrl+K</span>
         </button>
 
         {/* Server Toggle */}
@@ -398,7 +401,146 @@ export default function Navbar() {
             Masuk
           </button>
         )}
+
+        {/* Hamburger Menu Toggle */}
+        <button
+          className="mobile-menu-toggle"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+          style={{
+            display: 'none',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '36px',
+            height: '36px',
+            borderRadius: 'var(--radius-sm)',
+            background: 'var(--bg-elevated)',
+            border: '1px solid var(--border-card)',
+            color: 'var(--text-primary)',
+            cursor: 'pointer',
+            flexShrink: 0,
+            transition: 'var(--transition)',
+          }}
+        >
+          {mobileMenuOpen ? (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
       </nav>
+
+      {/* Mobile Drawer Menu */}
+      {mobileMenuOpen && (
+        <div
+          className="mobile-drawer-overlay"
+          onClick={() => setMobileMenuOpen(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 99,
+            background: 'rgba(0, 0, 0, 0.6)',
+            backdropFilter: 'blur(8px)',
+            animation: 'fadeIn 0.2s ease',
+          }}
+        >
+          <div
+            className="mobile-drawer"
+            onClick={e => e.stopPropagation()}
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: '280px',
+              background: 'var(--bg-surface)',
+              borderLeft: '1px solid var(--border-card)',
+              padding: '24px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px',
+              boxShadow: '-10px 0 40px rgba(0,0,0,0.5)',
+              overflowY: 'auto',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifySpaceBetween: 'space-between', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px' }}>
+              <span style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: '1.2rem', color: 'var(--text-primary)' }}>Menu</span>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  width: '28px', height: '28px', borderRadius: '50%',
+                  background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'var(--text-muted)', cursor: 'pointer',
+                }}
+              >✕</button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {[
+                { label: 'Beranda', path: '/' },
+                { label: 'Populer', path: '/popular' },
+                { label: 'Terbaru', path: '/latest' },
+              ].map(({ label, path }) => (
+                <Link
+                  key={path}
+                  to={path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  style={{
+                    padding: '12px 16px',
+                    borderRadius: 'var(--radius-md)',
+                    background: 'var(--bg-elevated)',
+                    color: 'var(--text-primary)',
+                    fontWeight: 600,
+                    fontSize: '0.9rem',
+                    transition: 'var(--transition)',
+                  }}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Genre</span>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '6px',
+              }}>
+                {GENRES.map(g => (
+                  <button
+                    key={g}
+                    onClick={() => {
+                      navigate(`/genre?genre=${encodeURIComponent(g)}`);
+                      setMobileMenuOpen(false);
+                    }}
+                    style={{
+                      padding: '8px 10px',
+                      borderRadius: '8px',
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid var(--border-subtle)',
+                      color: 'var(--text-secondary)',
+                      fontSize: '0.75rem',
+                      fontWeight: 500,
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    {g}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Search Modal */}
       {searchOpen && (
