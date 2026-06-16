@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/api-proxy/:path*",
+      "destination": "https://api.mangadex.org/:path*"
+    },
+    {
+      "source": "/uploads-proxy/:path*",
+      "destination": "https://uploads.mangadex.org/:path*"
+    },
+    {
+      "source": "/anime-proxy/:path*",
+      "destination": "https://api.jikan.moe/v4/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
