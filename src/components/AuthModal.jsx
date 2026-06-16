@@ -66,7 +66,7 @@ export default function AuthModal({ onClose }) {
         background: 'var(--bg-surface)',
         borderRadius: 'var(--radius-xl)',
         border: '1px solid var(--border-card)',
-        boxShadow: '0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(124,58,237,0.15)',
+        boxShadow: '0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(244,117,33,0.12)',
         overflow: 'hidden',
         animation: 'fadeIn 0.25s ease',
       }}>
@@ -89,7 +89,7 @@ export default function AuthModal({ onClose }) {
                 fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: '1rem',
                 background: 'var(--gradient-accent)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-              }}>Kubamanga</span>
+              }}>Kubahanime</span>
             </div>
             <h2 style={{
               fontFamily: 'Outfit, sans-serif', fontWeight: 800,
@@ -126,7 +126,7 @@ export default function AuthModal({ onClose }) {
                 cursor: 'pointer', transition: 'var(--transition)',
                 background: tab === t.key ? 'var(--bg-elevated)' : 'transparent',
                 border: tab === t.key ? '1px solid var(--border-accent)' : '1px solid transparent',
-                color: tab === t.key ? 'var(--text-accent)' : 'var(--text-muted)',
+                color: tab === t.key ? 'var(--accent-primary)' : 'var(--text-muted)',
               }}
             >
               {t.label}

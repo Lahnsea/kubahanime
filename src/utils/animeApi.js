@@ -104,9 +104,18 @@ export async function getPopularAnime(page = 1, limit = 24) {
   return fetchAPI('/top/anime', { page, limit });
 }
 
-/** Search anime by title */
-export async function searchAnime(query, page = 1, limit = 24) {
-  return fetchAPI('/anime', { q: query, page, limit });
+/** Search anime by title with optional filters */
+export async function searchAnime(query, page = 1, limit = 24, filters = {}) {
+  const params = { page, limit };
+  if (query) params.q = query;
+  if (filters.genres)    params.genres    = filters.genres;
+  if (filters.type)      params.type      = filters.type;
+  if (filters.status)    params.status    = filters.status;
+  if (filters.order_by)  params.order_by  = filters.order_by;
+  if (filters.sort)      params.sort      = filters.sort;
+  if (filters.min_score) params.min_score = filters.min_score;
+  if (filters.rating)    params.rating    = filters.rating;
+  return fetchAPI('/anime', params);
 }
 
 /** Get detailed info for a single anime */

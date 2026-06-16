@@ -98,50 +98,63 @@ export default function GenrePage() {
   return (
     <>
       <div style={{ paddingTop: 'var(--navbar-height)', minHeight: '100vh', paddingBottom: '64px' }}>
-        {/* Genre Header Banner */}
+        {/* Genre Header Banner — Crunchyroll orange */}
         <div style={{
-          background: 'linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(59,130,246,0.08) 100%)',
+          background: 'linear-gradient(135deg, rgba(244,117,33,0.12) 0%, rgba(255,140,58,0.06) 60%, transparent 100%)',
           borderBottom: '1px solid var(--border-subtle)',
-          padding: '40px 24px 32px',
+          padding: '44px 24px 36px',
           marginBottom: '0',
+          position: 'relative',
+          overflow: 'hidden',
         }}>
+          {/* Accent side bar */}
+          <div style={{
+            position: 'absolute', left: 0, top: 0, bottom: 0,
+            width: 4, background: 'var(--gradient-accent)',
+          }} />
           <div className="container">
             {/* Breadcrumb */}
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '14px' }}>
               <Link to="/" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
               <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>›</span>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-accent)' }}>Genre: {genre}</span>
+              <Link to="/genre" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textDecoration: 'none' }}>Genre</Link>
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>›</span>
+              <span style={{ fontSize: '0.8rem', color: 'var(--accent-primary)', fontWeight: 600 }}>{genre}</span>
             </div>
             <h1 style={{
-              fontFamily: 'Outfit, sans-serif', fontWeight: 800,
+              fontFamily: 'Outfit, sans-serif', fontWeight: 900,
               fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
               background: 'var(--gradient-accent)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-              marginBottom: '8px',
+              backgroundClip: 'text',
+              marginBottom: '8px', letterSpacing: '-0.02em',
             }}>
-              Genre: {genre}
+              🎭 Genre: {genre}
             </h1>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-              Anime bergenre <strong style={{ color: 'var(--text-accent)' }}>{genre}</strong> dengan rating terbaik
+            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '24px' }}>
+              Anime bergenre <strong style={{ color: 'var(--accent-primary)' }}>{genre}</strong> dengan rating terbaik
             </p>
 
             {/* Genre Pills */}
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '20px' }}>
+            <div style={{ display: 'flex', gap: '7px', flexWrap: 'wrap' }}>
               {Object.keys(GENRE_MAP).map(g => (
                 <Link
                   key={g}
                   to={`/genre?genre=${encodeURIComponent(g)}`}
                   style={{
-                    padding: '6px 16px',
+                    padding: '6px 15px',
                     borderRadius: '99px',
-                    fontSize: '0.8rem',
+                    fontSize: '0.78rem',
                     fontWeight: 600,
                     textDecoration: 'none',
                     background: g === genre ? 'var(--accent-primary)' : 'var(--bg-elevated)',
                     color: g === genre ? 'white' : 'var(--text-secondary)',
                     border: `1px solid ${g === genre ? 'transparent' : 'var(--border-card)'}`,
                     transition: 'var(--transition)',
+                    boxShadow: g === genre ? '0 0 14px rgba(244,117,33,0.4)' : 'none',
                   }}
+                  onMouseEnter={e => { if (g !== genre) { e.currentTarget.style.borderColor = 'rgba(244,117,33,0.4)'; e.currentTarget.style.color = 'var(--accent-primary)'; } }}
+                  onMouseLeave={e => { if (g !== genre) { e.currentTarget.style.borderColor = 'var(--border-card)'; e.currentTarget.style.color = 'var(--text-secondary)'; } }}
                 >
                   {g}
                 </Link>
